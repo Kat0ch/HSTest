@@ -12,7 +12,7 @@ from rest_framework.response import Response
 def code_generate(length: int) -> str:
     code: str = ''
     for symbol in range(length):
-        code += randint(0, 9)
+        code += str(randint(0, 9))
     return code
 
 
@@ -25,9 +25,9 @@ class TelephoneNumberRequestView(APIView):
 
         profile, created = Profile.objects.get_or_create(phone_number=phone_number)
 
-        code = randint(1000, 9999)
+        code = code_generate(4)
         print(profile)
-        profile.auth_code = code_generate(4)
+        profile.auth_code = code
         profile.save()
 
         sleep(2)
@@ -42,7 +42,7 @@ class VerifyCodeView(APIView):
         entered_code = request.data.get('code')
 
         try:
-            profile = Profile.objects.filter(phone_number=phone_number)
+            profile = Profile.objects.get(phone_number=phone_number)
         except:
             return Response({"error": "Invalid phone number"})
 

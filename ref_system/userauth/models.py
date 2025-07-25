@@ -7,7 +7,7 @@ class Profile(models.Model):
     is_authenticated = models.BooleanField(default=False, verbose_name='Авторизован')
     invite_code = models.CharField(max_length=20, unique=True, verbose_name='Код приглашения')
     invited_by = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
-                                   related_name='invited_users', verbose_name='Кем приглашен')
+                                   related_name='invited_profiles', verbose_name='Кем приглашен')
 
     def __str__(self):
         return f'{self.is_authenticated} - {self.phone_number}'
